@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Catálogo</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <div class="js-sec" style="padding-top:40px;padding-bottom:60px;">
+
+        <div class="js-sec__head" style="margin-bottom:8px;">
+            <div>
+                <div class="js-sec__eyebrow">Catálogo</div>
+                <h1 class="js-display js-sec__title" style="font-size:46px;">Todos los productos</h1>
+            </div>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/productos/nuevo}" class="js-btn js-btn--primary" style="font-size:14px;padding:12px 20px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                Nuevo producto
+            </a>
+        </div>
+
+        <!-- Filtros por categoría (filtran en el navegador) -->
+        <div class="js-chips">
+            <button type="button" class="js-chip is-active" data-filter="*">Todos</button>
+            <button type="button" class="js-chip" data-filter="Textil">Textil</button>
+            <button type="button" class="js-chip" data-filter="Termos y botellas">Termos &amp; Botellas</button>
+            <button type="button" class="js-chip" data-filter="Gorras y accesorios">Gorras &amp; Accesorios</button>
+            <button type="button" class="js-chip" data-filter="Utiles y papeleria">Útiles &amp; Papelería</button>
+        </div>
+
+        <div class="js-grid">
+            <div class="js-card" th:each="producto : ${productos}"
+                 th:attr="data-categoria=${producto.categoria.nombre}">
+
+                <a class="js-card__media" th:href="@{/productos/{id}(id=${producto.id})}">
+                    <img th:if="${producto.imagen != null}" th:src="@{'/uploads/productos/' + ${producto.imagen}}" alt="">
+                    <span th:unless="${producto.imagen != null}" class="js-card__word">UAM</span>
+                    <span th:unless="${producto.imagen != null}" class="js-card__file" th:text="${producto.imagen} ?: 'producto.jpg'">producto.jpg</span>
+                    <span th:if="${producto.stock != null and producto.stock <= 25}" class="js-card__badge">Pocas unidades</span>
+                </a>
+
+                <div class="js-card__body">
+                    <div class="js-card__cat" th:text="${producto.categoria.nombre}">Categoría</div>
+                    <a class="js-card__name" th:href="@{/productos/{id}(id=${producto.id})}" th:text="${producto.nombre}">Nombre</a>
+                    <div class="js-card__stock">Stock: <span th:text="${producto.stock}">0</span></div>
+
+                    <div class="js-card__foot">
+                        <span class="js-price">C$<span th:text="${#numbers.formatInteger(producto.precio,1,'COMMA')}">0</span></span>
+                        <button type="button" class="js-addbtn"
+                                data-add
+                                th:attr="data-id=${producto.id}, data-nombre=${producto.nombre}, data-precio=${producto.precio}, data-imagen=${producto.imagen}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                            Agregar
+                        </button>
+                    </div>
+
+                    <!-- Acciones de administrador -->
+                    <div sec:authorize="hasRole('ADMIN')" style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);">
+                        <a th:href="@{/productos/{id}(id=${producto.id})}" class="js-link" style="font-size:13px;">Ver</a>
+                        <a th:href="@{/productos/editar/{id}(id=${producto.id})}" class="js-link" style="font-size:13px;color:var(--gold);">Editar</a>
+                        <a th:href="@{/productos/eliminar/{id}(id=${producto.id})}" class="js-link" style="font-size:13px;color:var(--danger);"
+                           onclick="return confirm('¿Desea eliminar este producto?')">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

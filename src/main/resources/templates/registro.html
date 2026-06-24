@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrarse · Jaguar Shop UAM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/jaguar.css}" rel="stylesheet">
+</head>
+
+<body style="display:flex;flex-direction:column;min-height:100vh;">
+
+<div class="js-auth-wrap" style="flex:1;">
+    <div class="js-auth js-fade">
+
+        <!-- Panel de marca -->
+        <div class="js-auth__brand">
+            <a class="js-logo" th:href="@{/}">
+                <span class="js-logo__mark" style="width:50px;height:50px;font-size:23px;">JS</span>
+                <span class="js-logo__name" style="font-size:23px;">JAGUAR SHOP</span>
+            </a>
+            <h2 class="js-auth__title">Unite a la<br>manada Jaguar</h2>
+            <p class="js-auth__lead">Creá tu cuenta para comprar más rápido y seguir tus pedidos de la tienda oficial UAM.</p>
+            <div class="js-auth__tag">#RugiendoConEstilo</div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="js-auth__form">
+            <div class="js-tabs">
+                <a class="js-tab" th:href="@{/login}">Iniciar sesión</a>
+                <a class="js-tab is-active" th:href="@{/registro}">Registrarse</a>
+            </div>
+
+            <div class="js-alert" th:if="${param.error}">No se pudo crear la cuenta. Revisá los datos.</div>
+
+            <form method="post" th:action="@{/registro}">
+                <div class="js-field">
+                    <label class="js-flabel" for="nombre">Nombre completo</label>
+                    <input class="js-input" type="text" id="nombre" name="nombre" placeholder="Tu nombre">
+                </div>
+                <div class="js-field">
+                    <label class="js-flabel" for="correo">Correo electrónico</label>
+                    <input class="js-input" type="email" id="correo" name="correo" placeholder="tu.correo@uam.edu.ni">
+                </div>
+                <div class="js-field" style="margin-bottom:22px;">
+                    <label class="js-flabel" for="password">Contraseña</label>
+                    <input class="js-input" type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="js-btn js-btn--primary js-btn--block" style="height:50px;font-size:18px;">Crear cuenta</button>
+                <div style="text-align:center;font-size:13px;color:var(--muted);margin-top:18px;">
+                    ¿Ya tenés cuenta? <a th:href="@{/login}" style="color:var(--teal);font-weight:600;">Iniciá sesión</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

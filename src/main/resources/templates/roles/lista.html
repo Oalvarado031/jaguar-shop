@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Roles</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Gestión de Roles</h1>
+
+        <a th:href="@{/roles/nuevo}"
+           class="btn btn-primary">
+            Nuevo Rol
+        </a>
+    </div>
+
+    <div class="card bg-secondary text-light shadow">
+
+        <div class="card-body">
+
+            <table class="table table-dark table-striped">
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th width="220">Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="rol : ${roles}">
+
+                    <td th:text="${rol.id}"></td>
+
+                    <td th:text="${rol.nombre}"></td>
+
+                    <td th:text="${rol.descripcion}"></td>
+
+                    <td>
+
+                        <a th:href="@{/roles/editar/{id}(id=${rol.id})}"
+                           class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <a th:href="@{/roles/eliminar/{id}(id=${rol.id})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Desea eliminar este rol?')">
+                            Eliminar
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

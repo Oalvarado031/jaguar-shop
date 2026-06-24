@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Inicio</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <!-- ===== HERO ===== -->
+    <section class="js-hero">
+        <div>
+            <div class="js-eyebrow"><span class="pulse"></span> Colección oficial Jaguares</div>
+            <h1 class="js-display js-hero__title">Ruge con<br><span class="teal">estilo</span> propio</h1>
+            <p class="js-hero__lead">La tienda oficial de los Jaguares UAM. Textil, termos, gorras y accesorios que llevan tu identidad universitaria a otro nivel.</p>
+            <div class="js-hero__cta">
+                <a th:href="@{/productos}" class="js-btn js-btn--primary">
+                    Ver catálogo
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"></path><path d="m13 6 6 6-6 6"></path></svg>
+                </a>
+                <a th:href="@{/productos}" class="js-btn js-btn--ghost">Lo más vendido</a>
+            </div>
+            <div class="js-stats">
+                <div><div class="js-stat__num">+10</div><div class="js-stat__lbl">Productos oficiales</div></div>
+                <div class="sep"></div>
+                <div><div class="js-stat__num">100%</div><div class="js-stat__lbl">Identidad UAM</div></div>
+                <div class="sep"></div>
+                <div><div class="js-stat__num">8AM</div><div class="js-stat__lbl">Abierto en campus</div></div>
+            </div>
+        </div>
+
+        <div class="js-hero__visual" style="height:540px;">
+            <img th:src="@{/images/hero-jaguares.jpg}" alt="Colección oficial Jaguares UAM"
+                 style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
+            <div class="glow" style="background:linear-gradient(to top, rgba(8,12,20,.7), transparent 42%);"></div>
+            <div class="js-hero__chip">
+                <span>
+                    <span style="display:block;font-weight:700;font-size:13.5px;">Colección Jaguares UAM</span>
+                    <span style="display:block;font-size:12px;color:var(--gold);font-weight:600;">Textil · Termos · Gorras</span>
+                </span>
+                <span style="margin-left:auto;font-size:11px;color:var(--teal);border:1px solid var(--teal);border-radius:6px;padding:4px 8px;">Nuevo</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORÍAS ===== -->
+    <section class="js-sec">
+        <div class="js-sec__head">
+            <h2 class="js-display js-sec__title">Explora por categoría</h2>
+            <a th:href="@{/productos}" class="js-link">Ver todo →</a>
+        </div>
+        <div class="js-cats">
+            <a th:href="@{/productos}" class="js-cat">
+                <span class="js-cat__name">Textil</span>
+                <span class="js-cat__sub">Camisetas · hoodies · polos</span>
+                <span class="js-cat__go">Comprar →</span>
+            </a>
+            <a th:href="@{/productos}" class="js-cat">
+                <span class="js-cat__name">Termos &amp; Botellas</span>
+                <span class="js-cat__sub">Hidrátate con estilo</span>
+                <span class="js-cat__go">Comprar →</span>
+            </a>
+            <a th:href="@{/productos}" class="js-cat">
+                <span class="js-cat__name">Gorras &amp; Accesorios</span>
+                <span class="js-cat__sub">Gorras · mochilas · llaveros</span>
+                <span class="js-cat__go">Comprar →</span>
+            </a>
+            <a th:href="@{/productos}" class="js-cat">
+                <span class="js-cat__name">Útiles &amp; Papelería</span>
+                <span class="js-cat__sub">Cuadernos · tazas y más</span>
+                <span class="js-cat__go">Comprar →</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== LO MÁS VENDIDO ===== -->
+    <section class="js-sec">
+        <div class="js-sec__head">
+            <div>
+                <div class="js-sec__eyebrow">Los favoritos del campus</div>
+                <h2 class="js-display js-sec__title">Lo más vendido</h2>
+            </div>
+            <a th:href="@{/productos}" class="js-btn js-btn--ghost" style="font-size:13.5px;padding:10px 18px;">Ver todos los productos</a>
+        </div>
+
+        <div class="js-grid">
+            <div class="js-card" th:each="producto : ${productosDestacados}">
+                <a class="js-card__media" th:href="@{/productos/{id}(id=${producto.id})}">
+                    <img th:if="${producto.imagen != null}" th:src="@{'/uploads/productos/' + ${producto.imagen}}" alt="">
+                    <span th:unless="${producto.imagen != null}" class="js-card__word">UAM</span>
+                    <span th:unless="${producto.imagen != null}" class="js-card__file" th:text="${producto.imagen} ?: 'producto.jpg'">producto.jpg</span>
+                </a>
+                <div class="js-card__body">
+                    <div class="js-card__cat" th:text="${producto.categoria.nombre}">Categoría</div>
+                    <a class="js-card__name" th:href="@{/productos/{id}(id=${producto.id})}" th:text="${producto.nombre}">Nombre</a>
+                    <div class="js-card__foot">
+                        <span class="js-price">C$<span th:text="${#numbers.formatInteger(producto.precio,1,'COMMA')}">0</span></span>
+                        <button type="button" class="js-addbtn"
+                                data-add
+                                th:attr="data-id=${producto.id}, data-nombre=${producto.nombre}, data-precio=${producto.precio}, data-imagen=${producto.imagen}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HORARIOS ===== -->
+    <section class="js-sec" style="padding-top:48px;">
+        <div class="js-horarios">
+            <div>
+                <div class="js-horarios__eyebrow">Visítanos</div>
+                <h2 class="js-horarios__title">Horarios de atención</h2>
+                <p style="color:var(--muted);font-size:15px;margin:0;max-width:380px;">Encontranos dentro del campus UAM. Pasá a conocer toda la colección Jaguar.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+                <div class="js-horarios__row">
+                    <span class="js-horarios__day">Lunes a Viernes</span>
+                    <span class="js-horarios__time">8:00 AM – 5:00 PM</span>
+                </div>
+                <div class="js-horarios__row">
+                    <span class="js-horarios__day">Sábados</span>
+                    <span class="js-horarios__time">8:00 AM – 12:00 PM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VALUE PROPS ===== -->
+    <section class="js-sec" style="padding-bottom:60px;">
+        <div class="js-props">
+            <div class="js-prop">
+                <span class="js-prop__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 8-4-1-7-4-7-8V6l7-3Z"></path></svg></span>
+                <div><div class="js-prop__title">Productos oficiales</div><div class="js-prop__txt">Calidad seleccionada para la comunidad Jaguar.</div></div>
+            </div>
+            <div class="js-prop">
+                <span class="js-prop__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"></path></svg></span>
+                <div><div class="js-prop__title">Retiro en campus</div><div class="js-prop__txt">Reservá en línea y recogé en la tienda UAM.</div></div>
+            </div>
+            <div class="js-prop">
+                <span class="js-prop__icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M3 10h18"></path></svg></span>
+                <div><div class="js-prop__title">Compra fácil</div><div class="js-prop__txt">Proceso simple para solicitar tus productos.</div></div>
+            </div>
+        </div>
+    </section>
+
+</section>
+
+</body>
+</html>

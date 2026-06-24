@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión · Jaguar Shop UAM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/jaguar.css}" rel="stylesheet">
+</head>
+
+<body style="display:flex;flex-direction:column;min-height:100vh;">
+
+<div class="js-auth-wrap" style="flex:1;">
+    <div class="js-auth js-fade">
+
+        <!-- Panel de marca -->
+        <div class="js-auth__brand">
+            <a class="js-logo" th:href="@{/}">
+                <span class="js-logo__mark" style="width:50px;height:50px;font-size:23px;">JS</span>
+                <span class="js-logo__name" style="font-size:23px;">JAGUAR SHOP</span>
+            </a>
+            <h2 class="js-auth__title">Bienvenido<br>de vuelta, Jaguar</h2>
+            <p class="js-auth__lead">Accedé a tu cuenta para seguir tus pedidos y comprar la colección oficial de la UAM.</p>
+            <div class="js-auth__tag">#RugiendoConEstilo</div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="js-auth__form">
+            <div class="js-tabs">
+                <a class="js-tab is-active" th:href="@{/login}">Iniciar sesión</a>
+                <a class="js-tab" th:href="@{/registro}">Registrarse</a>
+            </div>
+
+            <div class="js-alert" th:if="${param.error}">Usuario o contraseña incorrectos. Intentá de nuevo.</div>
+            <div class="js-alert js-alert--ok" th:if="${param.logout}">Cerraste sesión correctamente.</div>
+            <div class="js-alert js-alert--ok" th:if="${param.registered}">¡Cuenta creada! Ya podés iniciar sesión.</div>
+
+            <form method="post" th:action="@{/login}">
+                <div class="js-field">
+                    <label class="js-flabel" for="username">Usuario o correo</label>
+                    <input class="js-input" type="text" id="username" name="username" placeholder="admin" autofocus>
+                </div>
+                <div class="js-field" style="margin-bottom:10px;">
+                    <label class="js-flabel" for="password">Contraseña</label>
+                    <input class="js-input" type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                <div style="text-align:right;margin-bottom:22px;">
+                    <a style="color:var(--teal);font-size:12.5px;">¿Olvidaste tu contraseña?</a>
+                </div>
+                <button type="submit" class="js-btn js-btn--primary js-btn--block" style="height:50px;font-size:18px;">Entrar</button>
+                <div style="text-align:center;font-size:13px;color:var(--muted);margin-top:18px;">
+                    ¿No tenés cuenta? <a th:href="@{/registro}" style="color:var(--teal);font-weight:600;">Registrate</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
