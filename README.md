@@ -63,9 +63,6 @@ Convenciones que se respetan del profesor:
    ```
    O desde IntelliJ: ejecutar la clase `Application`.
 
-5. Abrir <http://localhost:8080>
-   > Spring Security está activo (igual que en el proyecto del profesor): pedirá login con el
-   > usuario `user` y la contraseña que se imprime en la consola al arrancar.
 
 ---
 Hecho por Oscar Alvarado
