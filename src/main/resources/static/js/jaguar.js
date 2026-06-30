@@ -66,7 +66,7 @@
           '<div class="js-cart__thumb">' + img + '</div>' +
           '<div style="flex:1;min-width:0;">' +
             '<div class="js-cart__iname">' + it.nombre + '</div>' +
-            '<div class="js-cart__imeta">Talla ' + it.size + ' · ' + fmt(it.precio) + '</div>' +
+            '<div class="js-cart__imeta">' + (it.size && it.size !== "Única" ? "Talla " + it.size + " · " : "") + fmt(it.precio) + '</div>' +
             '<div style="display:flex;align-items:center;justify-content:space-between;">' +
               '<div class="js-cart__qty">' +
                 '<button data-dec="' + idx + '">−</button>' +

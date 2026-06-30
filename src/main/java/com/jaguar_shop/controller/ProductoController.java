@@ -66,9 +66,7 @@ public class ProductoController {
     @GetMapping("/{id}")
     public String verDetalle(@PathVariable Long id, Model model){
         model.addAttribute("producto", productoService.buscarPorId(id));
-        model.addAttribute("categorias", categoriaRepository.findAll());
-
-        return "productos/formulario";
+        return "productos/detalle";
     }
 
     @GetMapping("/editar/{id}")
