@@ -41,10 +41,9 @@ public class Usuario {
     @Column(name = "activo", nullable = false)
     private Boolean activo;
 
-    @NotNull
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_creacion", nullable = false)
-    private Instant fechaCreacion;
+    private Instant fechaCreacion;   // la asigna @PrePersist; no se valida en el form
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

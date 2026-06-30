@@ -58,10 +58,12 @@
 
     <div style="flex:1;"></div>
 
-    <label class="js-search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="m20.5 20.5-4-4"></path></svg>
-        <input type="search" placeholder="Buscar productos…">
-    </label>
+    <form class="js-search" th:action="@{/productos}" method="get" role="search">
+        <button type="submit" style="background:none;border:0;padding:0;display:flex;cursor:pointer;color:inherit;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"></circle><path d="m20.5 20.5-4-4"></path></svg>
+        </button>
+        <input type="search" name="q" th:value="${param.q}" placeholder="Buscar productos…">
+    </form>
 
     <!-- Sesión -->
     <span sec:authorize="isAuthenticated()" class="js-iconbtn" title="Mi cuenta" style="cursor:default;">

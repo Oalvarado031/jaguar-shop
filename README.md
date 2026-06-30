@@ -1,33 +1,39 @@
 # Jaguar Shop
 
-Tienda web oficial de productos **UAM (Jaguar)**, con la **misma arquitectura base del proyecto del profesor** (`tienda-express`):
+Tienda web oficial de productos **UAM (Jaguar)**:
 **Spring Boot 3 + Java 21 + Lombok + Spring Security + Thymeleaf (Layout Dialect) + PostgreSQL**.
 
-## Arquitectura (igual a la del profesor)
+## Arquitectura
 
 ```
 src/main/java/com/jaguar_shop
 ├── Application.java          # clase principal
 ├── WebConfig.java            # sirve /uploads/productos/**
 ├── config/
-│   └── PasswordConfig.java   # BCryptPasswordEncoder
-├── controller/               # HomeController, ProductoController, RolController, UsuarioController
+│   ├── PasswordConfig.java   # BCryptPasswordEncoder
+│   ├── SecurityConfig.java   # reglas de acceso (público / login / ADMIN)
+│   └── DataInitializer.java  # siembra roles + usuario admin
+├── controller/               # Home, Producto, Rol, Usuario, Auth, Pedido
 ├── modelo/                   # Categoria, Producto, Pedido, DetallePedido, Rol, Usuario, UsuarioRol (Lombok)
 ├── repository/               # *Repository extends JpaRepository
+├── security/                 # JaguarUserDetailsService (login contra la BD)
+├── dto/                      # CheckoutRequest
 └── service/                  # interfaces
     └── impl/                 # implementaciones (@Service @RequiredArgsConstructor)
 
 src/main/resources
 ├── application.properties
+├── static/                   # css/jaguar.css, js/jaguar.js, images/
 └── templates/
     ├── layouts/main.html     # layout con Thymeleaf Layout Dialect + sec:authorize
-    ├── home.html
+    ├── home.html, login.html, registro.html
     ├── productos/  (lista, formulario, detalle)
+    ├── pedidos/    (lista, confirmacion)
     ├── roles/      (lista, formulario)
-    └── usuarios/   (lista, formularios)
+    └── usuarios/   (lista, formulario)
 ```
 
-Convenciones que se respetan del profesor:
+Convenciones:
 - Paquete base `com.jaguar_shop`, carpeta de entidades `modelo/`.
 - **Lombok** (`@Getter/@Setter`, `@RequiredArgsConstructor`, `@Builder`).
 - Patrón **Service (interfaz) + service/impl (implementación)**.
@@ -62,7 +68,6 @@ Convenciones que se respetan del profesor:
    ./mvnw spring-boot:run
    ```
    O desde IntelliJ: ejecutar la clase `Application`.
-
 
 ---
 Hecho por Oscar Alvarado

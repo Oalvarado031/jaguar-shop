@@ -180,13 +180,21 @@
             items: cart.map(function (x) { return { id: x.id, qty: x.qty }; })
           })
         })
-          .then(function (r) { return r.json().catch(function () { return {}; }); })
+          .then(function (r) {
+            // Sin sesión, Spring redirige al login: mandamos al usuario ahí.
+            if (r.redirected || r.status === 401 || r.status === 403) {
+              window.location.href = "/login";
+              return null;
+            }
+            return r.json().catch(function () { return {}; });
+          })
           .then(function (d) {
-            if (d && d.ok) {
+            if (!d) return;
+            if (d.ok) {
               localStorage.removeItem(KEY);
               window.location.href = "/pedidos/" + d.pedidoId;
             } else {
-              alert(d && d.error ? d.error : "No se pudo completar la compra. ¿Iniciaste sesión?");
+              alert(d.error ? d.error : "No se pudo completar la compra.");
               checkoutBtn.disabled = false;
               checkoutBtn.textContent = original;
             }
@@ -198,5 +206,30 @@
           });
       });
     }
+
+    // Filtros desde la URL en el catálogo: ?q=texto  y/o  ?cat=Categoría
+    (function () {
+      var grid = document.querySelector(".js-grid");
+      if (!grid) return;
+      var params = new URLSearchParams(window.location.search);
+      var q = (params.get("q") || "").trim().toLowerCase();
+      var cat = params.get("cat");
+      if (!q && !cat) return;
+
+      // Activa el chip de la categoría si corresponde
+      if (cat) {
+        document.querySelectorAll("[data-filter]").forEach(function (c) {
+          c.classList.toggle("is-active", c.getAttribute("data-filter") === cat);
+        });
+      }
+
+      grid.querySelectorAll(".js-card").forEach(function (card) {
+        var okCat = !cat || card.getAttribute("data-categoria") === cat;
+        var nameEl = card.querySelector(".js-card__name");
+        var name = nameEl ? nameEl.textContent.toLowerCase() : "";
+        var okQ = !q || name.indexOf(q) >= 0;
+        card.style.display = (okCat && okQ) ? "" : "none";
+      });
+    })();
   });
 })();
