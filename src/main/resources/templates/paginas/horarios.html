@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Horarios</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <div class="js-sec" style="max-width:820px;padding-top:40px;padding-bottom:70px;">
+
+        <div class="js-sec__eyebrow">Visítanos</div>
+        <h1 class="js-display js-sec__title" style="font-size:44px;">Horarios de atención</h1>
+        <p style="color:var(--muted);max-width:520px;">
+            Encontranos dentro del campus UAM, Managua. Pasá a conocer toda la colección Jaguar
+            y retirá tus pedidos en línea sin costo.
+        </p>
+
+        <div class="js-panel" style="margin-top:22px;">
+            <div class="js-horarios__row">
+                <span class="js-horarios__day">Lunes a Viernes</span>
+                <span class="js-horarios__time">8:00 AM – 5:00 PM</span>
+            </div>
+            <div class="js-horarios__row" style="margin-top:14px;">
+                <span class="js-horarios__day">Sábados</span>
+                <span class="js-horarios__time">8:00 AM – 12:00 PM</span>
+            </div>
+            <div class="js-horarios__row" style="margin-top:14px;">
+                <span class="js-horarios__day">Domingos y feriados</span>
+                <span class="js-horarios__time" style="color:var(--danger);">Cerrado</span>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <a th:href="@{/productos}" class="js-btn js-btn--primary">Ver catálogo</a>
+            <a th:href="@{/contacto}" class="js-btn js-btn--ghost">Contacto</a>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

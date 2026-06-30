@@ -111,9 +111,9 @@
         <div>
             <div class="js-footer__h">Ayuda</div>
             <div class="js-footer__links">
-                <span>Horarios</span>
-                <span>Contacto</span>
-                <span>Cambios y devoluciones</span>
+                <a th:href="@{/horarios}">Horarios</a>
+                <a th:href="@{/contacto}">Contacto</a>
+                <a th:href="@{/cambios}">Cambios y devoluciones</a>
                 <a sec:authorize="hasRole('ADMIN')" th:href="@{/productos/nuevo}" style="color:var(--teal);">Panel admin</a>
             </div>
         </div>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Contacto</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <div class="js-sec" style="max-width:820px;padding-top:40px;padding-bottom:70px;">
+
+        <div class="js-sec__eyebrow">Estamos para ayudarte</div>
+        <h1 class="js-display js-sec__title" style="font-size:44px;">Contacto</h1>
+        <p style="color:var(--muted);max-width:520px;">
+            ¿Tenés dudas sobre un producto, talla o tu pedido? Escribinos por cualquiera
+            de estos medios y te respondemos en horario de atención.
+        </p>
+
+        <div class="js-props" style="margin-top:24px;">
+            <div class="js-prop">
+                <span class="js-prop__icon">💬</span>
+                <div>
+                    <div class="js-prop__title">WhatsApp</div>
+                    <div class="js-prop__txt">+505 8888 0000</div>
+                </div>
+            </div>
+            <div class="js-prop">
+                <span class="js-prop__icon">✉️</span>
+                <div>
+                    <div class="js-prop__title">Correo</div>
+                    <div class="js-prop__txt">tienda@uam.edu.ni</div>
+                </div>
+            </div>
+            <div class="js-prop">
+                <span class="js-prop__icon">📍</span>
+                <div>
+                    <div class="js-prop__title">Ubicación</div>
+                    <div class="js-prop__txt">Campus UAM, Managua, Nicaragua</div>
+                </div>
+            </div>
+            <div class="js-prop">
+                <span class="js-prop__icon">📷</span>
+                <div>
+                    <div class="js-prop__title">Instagram</div>
+                    <div class="js-prop__txt">@jaguar_shopuam</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:24px;">
+            <a th:href="@{/horarios}" class="js-btn js-btn--ghost">Ver horarios</a>
+            <a th:href="@{/productos}" class="js-btn js-btn--primary">Ir al catálogo</a>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

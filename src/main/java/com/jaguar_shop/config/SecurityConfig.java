@@ -26,7 +26,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/uploads/**", "/css/**", "/js/**",
                                 "/images/**", "/webjars/**", "/favicon.ico",
-                                "/login", "/registro"
+                                "/login", "/registro",
+                                "/horarios", "/contacto", "/cambios"
                         ).permitAll()
                         // Zona de administración (solo ADMIN)
                         .requestMatchers("/roles/**", "/usuarios/**").hasRole("ADMIN")
