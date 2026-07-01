@@ -155,56 +155,99 @@
     // ESC cierra el carrito
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
 
-    // Finalizar compra -> envia el carrito al backend (POST /pedidos/checkout)
-    var checkoutBtn = document.querySelector("[data-checkout]");
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener("click", function () {
+    // ===== Página de checkout (/pedidos/checkout) =====
+    var ckGrid = document.getElementById("jsCheckoutGrid");
+    if (ckGrid) {
+      var ckItems = document.getElementById("jsCheckoutItems");
+      var ckTotal = document.getElementById("jsCheckoutTotal");
+      var ckEmpty = document.getElementById("jsCheckoutEmpty");
+
+      // Resumen del carrito
+      (function renderCheckout() {
         var cart = read();
-        if (!cart.length) return;
-
-        var headers = { "Content-Type": "application/json" };
-        var tokenMeta = document.querySelector('meta[name="_csrf"]');
-        var headerMeta = document.querySelector('meta[name="_csrf_header"]');
-        if (tokenMeta && headerMeta && headerMeta.getAttribute("content")) {
-          headers[headerMeta.getAttribute("content")] = tokenMeta.getAttribute("content");
+        if (!cart.length) {
+          if (ckEmpty) ckEmpty.style.display = "block";
+          ckGrid.style.display = "none";
+          return;
         }
+        if (ckEmpty) ckEmpty.style.display = "none";
+        ckGrid.style.display = "grid";
+        var total = cart.reduce(function (a, c) { return a + c.precio * c.qty; }, 0);
+        ckItems.innerHTML = cart.map(function (it) {
+          var talla = (it.size && it.size !== "Única") ? " · " + it.size : "";
+          return '<div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;">' +
+                   '<span>' + it.nombre + talla + ' <span style="color:var(--muted);">x' + it.qty + '</span></span>' +
+                   '<span style="white-space:nowrap;">' + fmt(it.precio * it.qty) + '</span>' +
+                 '</div>';
+        }).join("");
+        ckTotal.textContent = fmt(total);
+      })();
 
-        checkoutBtn.disabled = true;
-        var original = checkoutBtn.textContent;
-        checkoutBtn.textContent = "Procesando…";
-
-        fetch("/pedidos/checkout", {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify({
-            items: cart.map(function (x) { return { id: x.id, qty: x.qty }; })
-          })
-        })
-          .then(function (r) {
-            // Sin sesión, Spring redirige al login: mandamos al usuario ahí.
-            if (r.redirected || r.status === 401 || r.status === 403) {
-              window.location.href = "/login";
-              return null;
-            }
-            return r.json().catch(function () { return {}; });
-          })
-          .then(function (d) {
-            if (!d) return;
-            if (d.ok) {
-              localStorage.removeItem(KEY);
-              window.location.href = "/pedidos/" + d.pedidoId;
-            } else {
-              alert(d.error ? d.error : "No se pudo completar la compra.");
-              checkoutBtn.disabled = false;
-              checkoutBtn.textContent = original;
-            }
-          })
-          .catch(function () {
-            alert("Error de conexión al finalizar la compra.");
-            checkoutBtn.disabled = false;
-            checkoutBtn.textContent = original;
-          });
+      // Mostrar la dirección solo si es envío a domicilio
+      var dirWrap = document.getElementById("ck_direccionWrap");
+      document.querySelectorAll('input[name="ck_entrega"]').forEach(function (r) {
+        r.addEventListener("change", function () {
+          if (dirWrap) dirWrap.style.display = (this.value === "ENVIO") ? "block" : "none";
+        });
       });
+
+      // Confirmar pedido
+      var confirmBtn = document.querySelector("[data-confirmar-pedido]");
+      if (confirmBtn) {
+        confirmBtn.addEventListener("click", function () {
+          var cart = read();
+          if (!cart.length) { alert("Tu carrito está vacío."); return; }
+
+          var val = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ""; };
+          var nombre = val("ck_nombre"), telefono = val("ck_telefono");
+          var entregaEl = document.querySelector('input[name="ck_entrega"]:checked');
+          var tipoEntrega = entregaEl ? entregaEl.value : "RETIRO";
+          var direccion = val("ck_direccion"), comentario = val("ck_comentario");
+
+          if (!nombre) { alert("Ingresá tu nombre."); return; }
+          if (!telefono) { alert("Ingresá un teléfono de contacto."); return; }
+          if (tipoEntrega === "ENVIO" && !direccion) { alert("Ingresá la dirección de envío."); return; }
+
+          var headers = { "Content-Type": "application/json" };
+          var tokenMeta = document.querySelector('meta[name="_csrf"]');
+          var headerMeta = document.querySelector('meta[name="_csrf_header"]');
+          if (tokenMeta && headerMeta && headerMeta.getAttribute("content")) {
+            headers[headerMeta.getAttribute("content")] = tokenMeta.getAttribute("content");
+          }
+
+          confirmBtn.disabled = true;
+          var original = confirmBtn.textContent;
+          confirmBtn.textContent = "Procesando…";
+
+          fetch("/pedidos/checkout", {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+              nombre: nombre, telefono: telefono, tipoEntrega: tipoEntrega,
+              direccion: direccion, comentario: comentario,
+              items: cart.map(function (x) { return { id: x.id, qty: x.qty }; })
+            })
+          })
+            .then(function (r) {
+              if (r.redirected || r.status === 401 || r.status === 403) { window.location.href = "/login"; return null; }
+              return r.json().catch(function () { return {}; });
+            })
+            .then(function (d) {
+              if (!d) return;
+              if (d.ok) {
+                localStorage.removeItem(KEY);
+                window.location.href = "/pedidos/" + d.pedidoId;
+              } else {
+                alert(d.error ? d.error : "No se pudo completar la compra.");
+                confirmBtn.disabled = false; confirmBtn.textContent = original;
+              }
+            })
+            .catch(function () {
+              alert("Error de conexión al finalizar la compra.");
+              confirmBtn.disabled = false; confirmBtn.textContent = original;
+            });
+        });
+      }
     }
 
     // Filtros desde la URL en el catálogo: ?q=texto  y/o  ?cat=Categoría

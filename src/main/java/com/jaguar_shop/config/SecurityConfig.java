@@ -31,12 +31,13 @@ public class SecurityConfig {
                         ).permitAll()
                         // Zona de administración (solo ADMIN)
                         .requestMatchers("/roles/**", "/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/pedidos/admin/**").hasRole("ADMIN")
                         .requestMatchers(
                                 "/productos/nuevo", "/productos/guardar",
                                 "/productos/editar/**", "/productos/actualizar/**",
                                 "/productos/eliminar/**"
                         ).hasRole("ADMIN")
-                        // Carrito/checkout y pedidos requieren sesión
+                        // Carrito/checkout y "mis pedidos" requieren sesión
                         .requestMatchers("/pedidos/**").authenticated()
                         // Navegación pública (home, catálogo, detalle)
                         .requestMatchers(HttpMethod.GET, "/", "/productos", "/productos/*").permitAll()

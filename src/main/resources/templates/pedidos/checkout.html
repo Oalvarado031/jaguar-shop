@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Finalizar compra</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <div class="js-sec" style="max-width:1080px;padding-top:36px;padding-bottom:70px;">
+
+        <div class="js-crumbs">
+            <a th:href="@{/productos}">Catálogo</a><span>/</span>
+            <span class="now">Finalizar compra</span>
+        </div>
+        <h1 class="js-pagetitle">Finalizar compra</h1>
+
+        <!-- Aviso si el carrito está vacío (lo controla el JS) -->
+        <div id="jsCheckoutEmpty" class="js-panel" style="display:none;text-align:center;color:var(--muted);">
+            Tu carrito está vacío.
+            <a th:href="@{/productos}" class="js-link">Ir al catálogo →</a>
+        </div>
+
+        <div id="jsCheckoutGrid" class="js-detail" style="display:none;align-items:start;">
+
+            <!-- Datos de envío -->
+            <div class="js-panel">
+                <h3 style="margin:0 0 16px;font-size:18px;">Datos de entrega</h3>
+
+                <div class="js-field">
+                    <label class="js-flabel" for="ck_nombre">Nombre completo</label>
+                    <input class="js-input" id="ck_nombre" th:value="${nombreUsuario}" placeholder="Tu nombre">
+                </div>
+
+                <div class="js-field">
+                    <label class="js-flabel" for="ck_telefono">Teléfono</label>
+                    <input class="js-input" id="ck_telefono" placeholder="8888 0000">
+                </div>
+
+                <div class="js-field">
+                    <label class="js-flabel">Tipo de entrega</label>
+                    <div style="display:flex;gap:18px;margin-top:4px;">
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                            <input type="radio" name="ck_entrega" value="RETIRO" checked> Retiro en campus
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                            <input type="radio" name="ck_entrega" value="ENVIO"> Envío a domicilio
+                        </label>
+                    </div>
+                </div>
+
+                <div class="js-field" id="ck_direccionWrap" style="display:none;">
+                    <label class="js-flabel" for="ck_direccion">Dirección de envío</label>
+                    <textarea class="js-textarea" id="ck_direccion" rows="2" placeholder="Barrio, calle, referencias…"></textarea>
+                </div>
+
+                <div class="js-field">
+                    <label class="js-flabel" for="ck_comentario">Comentario (opcional)</label>
+                    <textarea class="js-textarea" id="ck_comentario" rows="2" placeholder="Talla, color, indicaciones…"></textarea>
+                </div>
+            </div>
+
+            <!-- Resumen del pedido -->
+            <div class="js-panel">
+                <h3 style="margin:0 0 16px;font-size:18px;">Tu pedido</h3>
+                <div id="jsCheckoutItems"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);">
+                    <span style="color:var(--muted);">Total</span>
+                    <span id="jsCheckoutTotal" style="font-size:22px;font-weight:800;color:var(--gold);">C$0</span>
+                </div>
+                <div style="font-size:12px;color:var(--muted);margin:12px 0 16px;">Retiro gratis en el campus UAM.</div>
+                <button type="button" class="js-btn js-btn--primary js-btn--block" style="height:52px;font-size:18px;" data-confirmar-pedido>
+                    Confirmar pedido
+                </button>
+                <a th:href="@{/productos}" class="js-btn js-btn--ghost js-btn--block" style="margin-top:10px;">Seguir comprando</a>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

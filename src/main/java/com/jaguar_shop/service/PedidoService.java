@@ -11,5 +11,9 @@ public interface PedidoService {
 
     List<Pedido> listarPorCorreo(String correo);
 
+    List<Pedido> listarTodos();
+
     Pedido buscarPorId(Long id);
+
+    Pedido cambiarEstado(Long id, String estado);
 }

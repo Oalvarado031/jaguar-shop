@@ -33,6 +33,7 @@
                     <th>#</th>
                     <th>Fecha</th>
                     <th class="text-center">Artículos</th>
+                    <th>Estado</th>
                     <th class="text-end">Total</th>
                     <th class="text-end">Detalle</th>
                 </tr>
@@ -42,6 +43,10 @@
                     <td class="teal" th:text="'#' + ${p.id}">#0</td>
                     <td th:text="${p.fechaTexto}">fecha</td>
                     <td class="text-center" th:text="${#lists.size(p.detalles)}">0</td>
+                    <td>
+                        <span class="js-badge-estado" th:classappend="'e-' + ${#strings.toLowerCase(p.estado)}"
+                              th:text="${p.estado}">ESTADO</span>
+                    </td>
                     <td class="text-end">C$<span th:text="${#numbers.formatInteger(p.total,1,'COMMA')}">0</span></td>
                     <td class="text-end">
                         <a th:href="@{/pedidos/{id}(id=${p.id})}" class="js-link">Ver →</a>

@@ -441,3 +441,14 @@ h1,h2,h3 { font-family:var(--display); }
 }
 .js-panel .table .teal { color: var(--teal) !important; }
 .js-panel .table a { color: var(--teal); text-decoration: none; }
+
+/* ===== Insignia de estado de pedido ===== */
+.js-badge-estado {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: .4px;
+  border: 1px solid var(--line); white-space: nowrap;
+}
+.js-badge-estado.e-pendiente { color: var(--gold);   border-color: rgba(240,192,74,.4); }
+.js-badge-estado.e-pagado    { color: var(--teal);   border-color: rgba(28,197,214,.4); }
+.js-badge-estado.e-entregado { color: var(--ok);     border-color: rgba(95,214,168,.4); }
+.js-badge-estado.e-cancelado { color: var(--danger); border-color: rgba(224,106,106,.4); }

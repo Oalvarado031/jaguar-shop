@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Gestión de pedidos</title>
+</head>
+
+<body>
+
+<section layout:fragment="contenido" class="js-fade">
+
+    <div class="js-sec" style="max-width:1180px;padding-top:36px;padding-bottom:70px;">
+
+        <div class="js-sec__head" style="margin-bottom:18px;">
+            <div>
+                <div class="js-sec__eyebrow">Panel admin</div>
+                <h1 class="js-display js-sec__title" style="font-size:42px;">Pedidos</h1>
+            </div>
+        </div>
+
+        <div th:if="${mensaje}" class="js-alert js-alert--ok" th:text="${mensaje}"></div>
+        <div th:if="${error}" class="js-alert" th:text="${error}"></div>
+
+        <div th:if="${#lists.isEmpty(pedidos)}" class="js-panel" style="text-align:center;color:var(--muted);">
+            Todavía no hay pedidos.
+        </div>
+
+        <div th:unless="${#lists.isEmpty(pedidos)}" class="js-panel" style="padding:0;overflow-x:auto;">
+            <table class="table" style="margin:0;min-width:900px;">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Entrega</th>
+                    <th class="text-end">Total</th>
+                    <th>Estado</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${pedidos}">
+                    <td class="teal" th:text="'#' + ${p.id}">#0</td>
+                    <td th:text="${p.fechaTexto}">fecha</td>
+                    <td>
+                        <div style="font-weight:600;" th:text="${p.nombreCliente}">Cliente</div>
+                        <div style="font-size:12px;color:var(--muted);" th:text="${p.correo}">correo</div>
+                        <div style="font-size:12px;color:var(--muted);" th:if="${p.telefono}" th:text="${p.telefono}">tel</div>
+                    </td>
+                    <td>
+                        <span th:text="${p.entregaTexto}">Entrega</span>
+                        <div style="font-size:12px;color:var(--muted);" th:if="${p.direccion}" th:text="${p.direccion}">dir</div>
+                    </td>
+                    <td class="text-end">C$<span th:text="${#numbers.formatInteger(p.total,1,'COMMA')}">0</span></td>
+                    <td>
+                        <span class="js-badge-estado"
+                              th:classappend="'e-' + ${#strings.toLowerCase(p.estado)}"
+                              th:text="${p.estado}">ESTADO</span>
+                    </td>
+                    <td class="text-end">
+                        <form th:action="@{'/pedidos/admin/' + ${p.id} + '/estado'}" method="post"
+                              style="display:inline-flex;gap:6px;align-items:center;">
+                            <select name="estado" class="js-select" style="width:auto;padding:6px 10px;font-size:13px;">
+                                <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"
+                                        th:selected="${e == p.estado}"></option>
+                            </select>
+                            <button type="submit" class="js-btn js-btn--ghost" style="padding:7px 12px;font-size:13px;">Guardar</button>
+                        </form>
+                        <a th:href="@{/pedidos/{id}(id=${p.id})}" class="js-link" style="font-size:13px;margin-left:8px;">Ver</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

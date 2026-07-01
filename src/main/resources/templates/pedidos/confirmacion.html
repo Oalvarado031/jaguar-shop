@@ -17,11 +17,19 @@
         <div class="js-panel" style="text-align:center;">
             <div style="font-size:46px;line-height:1;margin-bottom:10px;">✅</div>
             <h1 class="js-pagetitle" style="margin-bottom:6px;">¡Pedido confirmado!</h1>
-            <p style="color:var(--muted);margin-bottom:4px;">
+            <p style="color:var(--muted);margin-bottom:8px;">
                 Pedido <strong class="teal">#<span th:text="${pedido.id}">0</span></strong> ·
                 <span th:text="${pedido.nombreCliente}">Cliente</span>
             </p>
-            <p style="color:var(--muted);font-size:13px;">Retirá tu pedido en la tienda del campus UAM.</p>
+            <span class="js-badge-estado" th:classappend="'e-' + ${#strings.toLowerCase(pedido.estado)}"
+                  th:text="${pedido.estado}">PENDIENTE</span>
+            <p style="color:var(--muted);font-size:13px;margin-top:12px;">
+                <span th:text="${pedido.entregaTexto}">Entrega</span>
+                <span th:if="${pedido.telefono}"> · Tel: <span th:text="${pedido.telefono}"></span></span>
+            </p>
+            <p style="color:var(--muted);font-size:13px;" th:if="${pedido.direccion}">
+                Dirección: <span th:text="${pedido.direccion}"></span>
+            </p>
         </div>
 
         <div class="js-panel" style="margin-top:20px;">

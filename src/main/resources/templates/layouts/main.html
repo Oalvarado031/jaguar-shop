@@ -41,7 +41,7 @@
 <header class="js-nav">
     <a class="js-logo" th:href="@{/}">
         <!-- Reemplazá el texto JS por tu logo: <img th:src="@{/images/logo.png}" alt="Jaguar Shop"> -->
-        <span class="js-logo__mark">JS</span>
+        <span class="js-logo__mark"><img th:src="@{/images/logo.jpg}" alt="Jaguar Shop"></span>
         <span>
             <span class="js-logo__name">JAGUAR SHOP</span>
             <span class="js-logo__sub" style="display:block;">UAM NICARAGUA</span>
@@ -52,6 +52,7 @@
         <a class="js-navlink" data-nav="/" th:href="@{/}">Inicio</a>
         <a class="js-navlink" data-nav="/productos" th:href="@{/productos}">Catálogo</a>
         <a class="js-navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/productos/nuevo}">Nuevo producto</a>
+        <a class="js-navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/pedidos/admin}">Pedidos</a>
         <a class="js-navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/roles}">Roles</a>
         <a class="js-navlink" sec:authorize="hasRole('ADMIN')" th:href="@{/usuarios}">Usuarios</a>
     </nav>
@@ -71,6 +72,11 @@
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
         <span th:text="${usuarioNombre}" style="font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;">Usuario</span>
     </a>
+    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="margin:0;">
+        <button type="submit" class="js-iconbtn" title="Cerrar sesión" style="border:0;cursor:pointer;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>
+        </button>
+    </form>
     <a sec:authorize="!isAuthenticated()" class="js-iconbtn" th:href="@{/login}" title="Iniciar sesión">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
     </a>
@@ -95,7 +101,7 @@
     <div class="js-footer__grid">
         <div>
             <div class="js-logo" style="margin-bottom:16px;">
-                <span class="js-logo__mark" style="width:42px;height:42px;font-size:19px;">JS</span>
+                <span class="js-logo__mark" style="width:42px;height:42px;"><img th:src="@{/images/logo.jpg}" alt="Jaguar Shop"></span>
                 <span class="js-footer__name">JAGUAR SHOP</span>
             </div>
             <p class="js-footer__txt">Donde el talento UAM encuentra su estilo. Creamos e inspiramos tu identidad para una generación que no se detiene.</p>
@@ -156,7 +162,7 @@
                 <span id="jsCartTotal" class="js-cart__total">C$0</span>
             </div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Retiro gratis en el campus UAM.</div>
-            <button type="button" class="js-btn js-btn--primary js-btn--block" style="height:52px;font-size:19px;" data-checkout>Finalizar compra</button>
+            <a th:href="@{/pedidos/checkout}" class="js-btn js-btn--primary js-btn--block" style="height:52px;font-size:19px;display:flex;align-items:center;justify-content:center;">Finalizar compra</a>
         </div>
     </aside>
 </div>

@@ -29,6 +29,21 @@ public class Pedido {
     @Column(name = "comentario", length = Integer.MAX_VALUE)
     private String comentario;
 
+    @Column(name = "telefono", length = 30)
+    private String telefono;
+
+    /** RETIRO (retiro en campus) o ENVIO (envío a domicilio). */
+    @Column(name = "tipo_entrega", length = 20)
+    private String tipoEntrega;
+
+    @Column(name = "direccion", length = Integer.MAX_VALUE)
+    private String direccion;
+
+    /** PENDIENTE, PAGADO, ENTREGADO, CANCELADO. */
+    @ColumnDefault("'PENDIENTE'")
+    @Column(name = "estado", nullable = false, length = 20)
+    private String estado;
+
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha_pedido", nullable = false)
     private Instant fechaPedido;
@@ -50,6 +65,14 @@ public class Pedido {
     void prePersist() {
         if (fechaPedido == null) fechaPedido = Instant.now();
         if (total == null) total = BigDecimal.ZERO;
+        if (estado == null) estado = "PENDIENTE";
+    }
+
+    /** Texto legible del tipo de entrega para las vistas. */
+    @Transient
+    public String getEntregaTexto() {
+        if ("ENVIO".equals(tipoEntrega)) return "Envío a domicilio";
+        return "Retiro en campus";
     }
 
     /** Fecha lista para mostrar en las vistas (evita formatear un Instant directo). */
