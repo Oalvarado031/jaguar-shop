@@ -1,18 +1,24 @@
 package com.jaguar_shop.controller;
 
+import com.jaguar_shop.modelo.Usuario;
+import com.jaguar_shop.repository.UsuarioRepository;
 import com.jaguar_shop.security.UsuarioPrincipal;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
- * Expone el nombre del usuario logueado a TODAS las vistas de forma segura.
- * Si el principal no es un UsuarioPrincipal (p. ej. una sesión vieja),
- * cae al nombre de usuario (correo) en vez de romper la página.
+ * Expone el nombre del usuario logueado a TODAS las vistas.
+ * - Sesión nueva: lo toma del UsuarioPrincipal (sin consultar BD).
+ * - Sesión vieja u otro principal: lo busca en la BD por correo.
  */
 @ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalControllerAdvice {
+
+    private final UsuarioRepository usuarioRepository;
 
     @ModelAttribute("usuarioNombre")
     public String usuarioNombre(Authentication authentication) {
@@ -23,6 +29,9 @@ public class GlobalControllerAdvice {
         if (principal instanceof UsuarioPrincipal up) {
             return up.getNombre();
         }
-        return authentication.getName();
+        // Fallback (p. ej. sesión previa al cambio): resolver el nombre por correo
+        return usuarioRepository.findByCorreo(authentication.getName())
+                .map(Usuario::getNombre)
+                .orElse(authentication.getName());
     }
 }

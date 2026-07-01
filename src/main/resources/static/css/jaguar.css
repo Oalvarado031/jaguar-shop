@@ -412,3 +412,32 @@ h1,h2,h3 { font-family:var(--display); }
   .js-pagetitle, .js-detail__title { font-size:32px; }
   .js-grid2 { grid-template-columns:1fr; }
 }
+
+/* ===== Tablas dentro de paneles oscuros (pedidos) ===== */
+.js-panel .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text);
+  --bs-table-border-color: var(--line);
+  color: var(--text);
+  margin: 0;
+}
+.js-panel .table > :not(caption) > * > * {
+  background-color: transparent;
+  color: var(--text);
+  border-color: var(--line);
+  padding: 14px 16px;
+}
+.js-panel .table thead th {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: .5px;
+  font-weight: 700;
+}
+.js-panel .table tfoot th {
+  color: var(--text);
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+}
+.js-panel .table .teal { color: var(--teal) !important; }
+.js-panel .table a { color: var(--teal); text-decoration: none; }

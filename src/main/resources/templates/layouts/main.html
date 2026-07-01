@@ -65,12 +65,12 @@
         <input type="search" name="q" th:value="${param.q}" placeholder="Buscar productos…">
     </form>
 
-    <!-- Sesión -->
-    <span sec:authorize="isAuthenticated()" class="js-iconbtn" title="Mi cuenta"
-          style="cursor:default;width:auto;padding:0 14px;gap:8px;border-radius:999px;">
+    <!-- Sesión: nombre del usuario + acceso a Mis pedidos -->
+    <a sec:authorize="isAuthenticated()" class="js-iconbtn" th:href="@{/pedidos}" title="Mis pedidos"
+       style="width:auto;padding:0 16px;gap:8px;border-radius:999px;text-decoration:none;">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
         <span th:text="${usuarioNombre}" style="font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;">Usuario</span>
-    </span>
+    </a>
     <a sec:authorize="!isAuthenticated()" class="js-iconbtn" th:href="@{/login}" title="Iniciar sesión">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
     </a>
