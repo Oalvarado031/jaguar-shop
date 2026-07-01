@@ -41,13 +41,13 @@ public class ProductoController {
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute Producto producto,
                                   BindingResult result, Model model,
-                                  @RequestParam("archivoImagen")MultipartFile imagen) throws IOException {
+                                  @RequestParam(value = "archivoImagen", required = false) MultipartFile imagen) throws IOException {
         if(result.hasErrors()){
             model.addAttribute("categorias", categoriaRepository.findAll());
             return "productos/formulario";
         }
 
-        if(!imagen.isEmpty()){
+        if(imagen != null && !imagen.isEmpty()){
             String nombreArchivo = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
 
             Path rutaCarpeta = Paths.get("uploads/productos");
