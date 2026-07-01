@@ -36,12 +36,6 @@ public class JaguarUserDetailsService implements UserDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        boolean deshabilitado = usuario.getActivo() != null && !usuario.getActivo();
-
-        return User.withUsername(usuario.getCorreo())
-                .password(usuario.getPassword())
-                .authorities(autoridades)
-                .disabled(deshabilitado)
-                .build();
+        return new UsuarioPrincipal(usuario, autoridades);
     }
 }
